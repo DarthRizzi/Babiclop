@@ -1,15 +1,20 @@
 using UnityEngine;
+using System.Linq;
+using System.Collections;
 
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
+    [Header("Inventário do Player")]
+    [SerializeField] public bool[] Ingredient;
+    [SerializeField] public bool[] Request;
 
     private void Awake()
     {
         if (Instance == null)
         {
             Instance = this;
-            DontDestroyOnLoad(gameObject); // Opcional
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -22,17 +27,40 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Função test utensil ativada");
         switch (nome)
         {
-            case "Utensil1":
-                Debug.Log("Opção Utensil 1");
-            break;
-
-            case "Utensil2":
-                Debug.Log("Opção Utensil 2");
+            case "TableTEST":
+                Debug.Log("Opção TableTEST");
+                CheckRecipe();
             break;
 
             default:
                 Debug.Log("Opção inválida");
             break;
+        }
+        
+    }
+
+    public void CheckRecipe()
+    {   
+        bool CheckRecipeBool;
+        CheckRecipeBool = Ingredient.OrderBy(x => x).SequenceEqual(Request.OrderBy(x => x));
+
+        if(CheckRecipeBool)
+        {
+            print("receita certa");
+
+            for (int i = 0; i < Ingredient.Length; i++)
+            {
+                Ingredient[i] = false;
+            }
+        }
+        else
+        {
+            print("receita errada");
+
+            for (int i = 0; i < Ingredient.Length; i++)
+            {
+                Ingredient[i] = false;
+            }
         }
         
     }
